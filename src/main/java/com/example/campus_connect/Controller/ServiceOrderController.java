@@ -1,5 +1,6 @@
 package com.example.campus_connect.Controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.campus_connect.Model.OrderStatus;
 import com.example.campus_connect.Model.ServiceOrder;
 import com.example.campus_connect.Service.ServiceOrderService;
 
@@ -58,4 +61,16 @@ public class ServiceOrderController {
         }
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }  
+    //b2
+    @GetMapping("/by-status")
+    public ResponseEntity<List<ServiceOrder>> getByStatus(@RequestParam OrderStatus status){
+        return new ResponseEntity<>(service.getByStatus(status), HttpStatus.OK);
+    }
+    //b3 
+    @GetMapping("/between")
+    public ResponseEntity<List<ServiceOrder>> getBetween(@RequestParam String start, @RequestParam String end ){
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+        return new ResponseEntity<>(service.getBetween(startDate, endDate), HttpStatus.OK);
+    }
 }

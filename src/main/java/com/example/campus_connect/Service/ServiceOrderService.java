@@ -1,5 +1,6 @@
 package com.example.campus_connect.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -7,6 +8,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.campus_connect.Model.OrderStatus;
 import com.example.campus_connect.Model.ServiceOrder;
 import com.example.campus_connect.Repository.ServiceOrderRepository;
 
@@ -48,6 +50,14 @@ public class ServiceOrderService {
         }
         repo.deleteById(id);
         return "Service order deleted successfully";
+    }
+    //b2
+    public List<ServiceOrder> getByStatus(OrderStatus status){
+        return repo.findByStatusOrderByOrderDateAsc(status);
+    }
+    //b3
+    public List<ServiceOrder> getBetween(LocalDate start, LocalDate end){
+        return repo.findByOrderDateBetweenOrderByOrderDateAsc(start, end);
     }
 
 }

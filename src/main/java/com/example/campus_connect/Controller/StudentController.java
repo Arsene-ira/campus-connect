@@ -52,4 +52,9 @@ public class StudentController {
         }
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
+    //b1
+    @GetMapping("/by-lastname")
+    public ResponseEntity<List<Student>> getByLastName(@RequestParam String lastName){
+        return new ResponseEntity<>(service.getByLastName(lastName), HttpStatus.OK);
+    }
 }
