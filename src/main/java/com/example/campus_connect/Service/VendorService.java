@@ -49,6 +49,10 @@ public class VendorService {
         repo.deleteById(id);
         return "Vendor deleted successfully";
     }
+    //c1
+    public List<Vendor> getByServiceType(String name) {
+    return repo.searchByServiceTypeName(name);
+}
 
 }
 

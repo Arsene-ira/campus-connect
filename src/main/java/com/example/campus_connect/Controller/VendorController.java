@@ -52,4 +52,9 @@ public class VendorController {
         }
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
+    //c1
+    @GetMapping("/by-service-type")
+public ResponseEntity<List<Vendor>> getByServiceType(@RequestParam String name) {
+    return new ResponseEntity<>(service.getByServiceType(name), HttpStatus.OK);
+}
 }

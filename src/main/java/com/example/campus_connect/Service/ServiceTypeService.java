@@ -46,6 +46,10 @@ public class ServiceTypeService {
         repo.deleteById(id);
         return "Service type deleted successfully";
     }
+    //c3
+    public List<ServiceType> getUnused() {
+    return repo.findUnused();
+}
 
 }
 

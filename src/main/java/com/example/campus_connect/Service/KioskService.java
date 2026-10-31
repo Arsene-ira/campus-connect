@@ -47,6 +47,10 @@ public class KioskService {
         repo.deleteById(id);
         return "Kiosk deleted successfully";
     }
+    //c2
+    public List<Kiosk> getFree() {
+    return repo.findFreeKiosks();
+    }
 
 }
 

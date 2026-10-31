@@ -52,4 +52,9 @@ public class KioskController {
         }
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
+    //c2
+    @GetMapping("/free")
+public ResponseEntity<List<Kiosk>> getFree() {
+    return new ResponseEntity<>(service.getFree(), HttpStatus.OK);
+}
 }

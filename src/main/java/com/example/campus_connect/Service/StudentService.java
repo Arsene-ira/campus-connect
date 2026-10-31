@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.campus_connect.Model.Student;
 import com.example.campus_connect.Repository.StudentRepository;
+import com.example.campus_connect.Repository.VendorRepository;
 
 
 @Service 
@@ -53,6 +54,16 @@ public class StudentService {
     public List<Student> getByLastName(String lastName){
         return repo.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
     }
+    //c4
+    @Autowired
+private VendorRepository vendorRepo;
+
+public Optional<List<Student>> getByVendor(UUID vendorId) {
+    if (!vendorRepo.existsById(vendorId)) {
+        return Optional.empty();
+    }
+    return Optional.of(repo.studentsOfVendor(vendorId));
+}
 
 }
 

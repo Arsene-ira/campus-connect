@@ -52,4 +52,9 @@ public class ServiceTypeController {
         }
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
+    //c333
+    @GetMapping("/unused")
+public ResponseEntity<List<ServiceType>> getUnused() {
+    return new ResponseEntity<>(service.getUnused(), HttpStatus.OK);
+}
 }

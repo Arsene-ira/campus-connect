@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.campus_connect.Model.OrderStatus;
 import com.example.campus_connect.Model.ServiceOrder;
 
+
 public interface ServiceOrderRepository extends JpaRepository<ServiceOrder, UUID> {
     //b2
     List<ServiceOrder> findByStatusOrderByOrderDateAsc(OrderStatus status);

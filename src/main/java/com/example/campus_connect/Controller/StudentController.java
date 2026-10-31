@@ -57,4 +57,13 @@ public class StudentController {
     public ResponseEntity<List<Student>> getByLastName(@RequestParam String lastName){
         return new ResponseEntity<>(service.getByLastName(lastName), HttpStatus.OK);
     }
+    //c4
+    @GetMapping("/of-vendor/{vendorId}")
+public ResponseEntity<?> getOfVendor(@PathVariable UUID vendorId) {
+    Optional<List<Student>> result = service.getByVendor(vendorId);
+    if (result.isPresent()) {
+        return new ResponseEntity<>(result.get(), HttpStatus.OK);
+    }
+    return new ResponseEntity<>("The vendor with that id does not exist", HttpStatus.NOT_FOUND);
+}
 }
