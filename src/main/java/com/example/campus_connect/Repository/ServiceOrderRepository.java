@@ -15,4 +15,6 @@ public interface ServiceOrderRepository extends JpaRepository<ServiceOrder, UUID
     List<ServiceOrder> findByStatusOrderByOrderDateAsc(OrderStatus status);
     //b3
     List<ServiceOrder> findByOrderDateBetweenOrderByOrderDateAsc(LocalDate start, LocalDate end);
+    //d1
+    boolean existsByVendorIdAndOrderDateAndStatusNot(UUID vendorId, LocalDate orderDate, OrderStatus status);
 }

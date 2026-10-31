@@ -19,6 +19,15 @@ public class ServiceOrderService {
     private ServiceOrderRepository repo;
     
     public String save(ServiceOrder order){
+        //d111
+        if (order.getOrderDate().isBefore(LocalDate.now())) {
+        return "Service order date cannot be in the past";
+    }
+    if (repo.existsByVendorIdAndOrderDateAndStatusNot(
+            order.getVendor().getId(), order.getOrderDate(), OrderStatus.DECLINED)) {
+        return "Vendor already has an order on that date";
+    }
+    order.setStatus(OrderStatus.REQUESTED);
         repo.save(order);
         return "Service order saved successfully";
     }
@@ -59,5 +68,28 @@ public class ServiceOrderService {
     public List<ServiceOrder> getBetween(LocalDate start, LocalDate end){
         return repo.findByOrderDateBetweenOrderByOrderDateAsc(start, end);
     }
+    //d2
+    public String changeStatus(UUID id, OrderStatus newStatus) {
+    Optional<ServiceOrder> found = repo.findById(id);
+    if (found.isEmpty()) {
+        return "The service order with that id does not exist";
+    }
+    ServiceOrder order = found.get();
+    OrderStatus current = order.getStatus();
+
+    boolean allowed =
+        (current == OrderStatus.REQUESTED
+            && (newStatus == OrderStatus.ACCEPTED || newStatus == OrderStatus.DECLINED))
+        || (current == OrderStatus.ACCEPTED
+            && (newStatus == OrderStatus.DELIVERED || newStatus == OrderStatus.DECLINED));
+
+    if (!allowed) {
+        return "Cannot change status from " + current + " to " + newStatus;
+    }
+    order.setStatus(newStatus);
+    repo.save(order);
+    return "Service order status updated successfully";
+}
+    
 
 }

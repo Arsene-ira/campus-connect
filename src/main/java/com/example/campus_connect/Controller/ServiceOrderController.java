@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,9 +30,16 @@ public class ServiceOrderController {
     private  ServiceOrderService service;
 
     @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestBody ServiceOrder order){
-        return new ResponseEntity<>(service.save(order), HttpStatus.CREATED);
+public ResponseEntity<String> save(@RequestBody ServiceOrder order) {
+    String msg = service.save(order);
+    if (msg.contains("in the past")) {
+        return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
     }
+    if (msg.contains("already has")) {
+        return new ResponseEntity<>(msg, HttpStatus.CONFLICT);
+    }
+    return new ResponseEntity<>(msg, HttpStatus.CREATED);
+}
     @GetMapping("/all")
     public ResponseEntity<List<ServiceOrder>> getAll() {
         return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
@@ -73,4 +81,17 @@ public class ServiceOrderController {
         LocalDate endDate = LocalDate.parse(end);
         return new ResponseEntity<>(service.getBetween(startDate, endDate), HttpStatus.OK);
     }
+    //d2
+    @PatchMapping("/{id}/status")
+public ResponseEntity<String> changeStatus(@PathVariable UUID id,
+                                           @RequestParam OrderStatus status) {
+    String msg = service.changeStatus(id, status);
+    if (msg.contains("does not exist")) {
+        return new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
+    }
+    if (msg.startsWith("Cannot change")) {
+        return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+    }
+    return new ResponseEntity<>(msg, HttpStatus.OK);
+}
 }

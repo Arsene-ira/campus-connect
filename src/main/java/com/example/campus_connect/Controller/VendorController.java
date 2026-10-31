@@ -57,4 +57,30 @@ public class VendorController {
 public ResponseEntity<List<Vendor>> getByServiceType(@RequestParam String name) {
     return new ResponseEntity<>(service.getByServiceType(name), HttpStatus.OK);
 }
+    //d3
+    @PutMapping("/{vendorId}/service-types/{serviceTypeId}")
+    public ResponseEntity<String> addServiceType(@PathVariable UUID vendorId,
+    @PathVariable UUID serviceTypeId) {
+    String msg = service.addServiceType(vendorId, serviceTypeId);
+    if (msg.contains("does not exist")) {
+        return new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
+    }
+    if (msg.contains("already has")) {
+        return new ResponseEntity<>(msg, HttpStatus.CONFLICT);
+    }
+    return new ResponseEntity<>(msg, HttpStatus.OK);
+}
+    //dew4
+    @PatchMapping("/{vendorId}/kiosk")
+public ResponseEntity<String> changeKiosk(@PathVariable UUID vendorId,
+      @RequestParam int kioskNumber) {
+    String msg = service.changeKiosk(vendorId, kioskNumber);
+    if (msg.contains("does not exist")) {
+        return new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
+    }
+    if (msg.contains("taken")) {
+        return new ResponseEntity<>(msg, HttpStatus.CONFLICT);
+    }
+    return new ResponseEntity<>(msg, HttpStatus.OK);
+}
 }

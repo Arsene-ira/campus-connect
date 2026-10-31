@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.example.campus_connect.Model.Kiosk;
 import com.example.campus_connect.Model.Vendor;
 
 public interface VendorRepository extends JpaRepository<Vendor, UUID> {
@@ -15,5 +16,7 @@ public interface VendorRepository extends JpaRepository<Vendor, UUID> {
        "WHERE LOWER(st.name) LIKE LOWER(CONCAT('%', :name, '%'))")
 List<Vendor> searchByServiceTypeName(@Param("name") String name);
     
+
+    boolean existsByKioskAndIdNot(Kiosk kiosk, UUID id);
 }
 
