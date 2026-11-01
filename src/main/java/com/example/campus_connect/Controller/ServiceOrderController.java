@@ -67,6 +67,10 @@ public ResponseEntity<String> save(@RequestBody ServiceOrder order) {
         if (msg.contains("does not exist")){
             return  new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
         }
+        //e3
+         if (msg.contains("has service reviews")) {
+        return new ResponseEntity<>(msg, HttpStatus.CONFLICT);
+    }
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }  
     //b2
@@ -93,5 +97,10 @@ public ResponseEntity<String> changeStatus(@PathVariable UUID id,
         return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
     }
     return new ResponseEntity<>(msg, HttpStatus.OK);
-}
+    }
+    //f1
+    @GetMapping("/stats/by-status")
+public ResponseEntity<List<Object[]>> getStatsByStatus() {
+    return new ResponseEntity<>(service.getStatsByStatus(), HttpStatus.OK);
+    }
 }

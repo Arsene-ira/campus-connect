@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import com.example.campus_connect.Model.OrderStatus;
 import com.example.campus_connect.Model.ServiceOrder;
 import com.example.campus_connect.Repository.ServiceOrderRepository;
+import com.example.campus_connect.Repository.ServiceReviewRepository;
+
+import jakarta.transaction.Transactional;
 
 
 @Service 
@@ -53,13 +56,21 @@ public class ServiceOrderService {
         repo.save(old);
         return "Service order Updated successfully";
     }
-    public String delete(UUID id){
-        if (!repo.existsById(id)){
-            return "The service order with that id does not exist";
-        }
-        repo.deleteById(id);
-        return "Service order deleted successfully";
+    //part e3
+    @Autowired
+private ServiceReviewRepository reviewRepo;
+
+public String delete(UUID id) {
+    Optional<ServiceOrder> found = repo.findById(id);
+    if (found.isEmpty()) {
+        return "The service order with that id does not exist";
     }
+    if (reviewRepo.existsByServiceOrder(found.get())) {
+        return "That service order has service reviews, delete them first";
+    }
+    repo.deleteById(id);
+    return "Service order deleted successfully";
+}
     //b2
     public List<ServiceOrder> getByStatus(OrderStatus status){
         return repo.findByStatusOrderByOrderDateAsc(status);
@@ -90,6 +101,15 @@ public class ServiceOrderService {
     repo.save(order);
     return "Service order status updated successfully";
 }
-    
+    //f1 part
+    public List<Object[]> getStatsByStatus() {
+    return repo.countByStatus();
+    }
+    //f2
+    @Transactional
+public String cancelDay(UUID vendorId, LocalDate date) {
+    int count = repo.cancelDay(vendorId, date, OrderStatus.DECLINED, OrderStatus.DELIVERED);
+    return count + " service orders cancelled";
+}
 
 }
