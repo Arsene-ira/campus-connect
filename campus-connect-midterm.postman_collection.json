@@ -1,0 +1,2273 @@
+{
+  "info": {
+    "name": "campus-connect-midterm",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "A2",
+      "item": [
+        {
+          "name": "A2 save student (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/students/save",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "save"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Demo\",\n  \"lastName\": \"Tester\",\n  \"studentNumber\": \"99-0001\",\n  \"email\": \"demo@auca.ac.rw\",\n  \"phone\": \"0788999999\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Student saved successfully\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 get all students (stores demo id)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/students/all",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "all"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "const s = pm.response.json().find(x => x.studentNumber === \"99-0001\");\nif (s) { pm.collectionVariables.set(\"demoStudentId\", s.id); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 get student by id (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/students/{{studentAline}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "{{studentAline}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 update demo student (200)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/students/update/{{demoStudentId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "update",
+                "{{demoStudentId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Demo\",\n  \"lastName\": \"Tester\",\n  \"studentNumber\": \"99-0001\",\n  \"email\": \"demo2@auca.ac.rw\",\n  \"phone\": \"0788999999\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Student updated successfully\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 delete demo student (200)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/students/delete/{{demoStudentId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "delete",
+                "{{demoStudentId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Student deleted successfully\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 FAIL student unknown id (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/students/11111111-1111-1111-1111-111111111111",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "11111111-1111-1111-1111-111111111111"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"The student with that id does not exist\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 FAIL service order unknown id (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/11111111-1111-1111-1111-111111111111",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "11111111-1111-1111-1111-111111111111"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"The service order with that id does not exist\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 FAIL vendor delete unknown id (404)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/delete/11111111-1111-1111-1111-111111111111",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "delete",
+                "11111111-1111-1111-1111-111111111111"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"The vendor with that id does not exist\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 get all service-types",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-types/all",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-types",
+                "all"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"4 items\", () => pm.expect(pm.response.json().length).to.eql(4));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 get all kiosks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/kiosks/all",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "kiosks",
+                "all"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"4 items\", () => pm.expect(pm.response.json().length).to.eql(4));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 get all vendors",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/all",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "all"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"3 items\", () => pm.expect(pm.response.json().length).to.eql(3));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 get all service-orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/all",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "all"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "B1",
+      "item": [
+        {
+          "name": "B1 mutesi lowercase",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/students/by-lastname?lastName=mutesi",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "by-lastname"
+              ],
+              "query": [
+                {
+                  "key": "lastName",
+                  "value": "mutesi"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"2 items\", () => pm.expect(pm.response.json().length).to.eql(2));",
+                  "pm.test(\"Aline first\", () => pm.expect(pm.response.json()[0].firstName).to.eql(\"Aline\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "B1 MUTESI uppercase",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/students/by-lastname?lastName=MUTESI",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "by-lastname"
+              ],
+              "query": [
+                {
+                  "key": "lastName",
+                  "value": "MUTESI"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"2 items\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "B1 no match",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/students/by-lastname?lastName=zzz",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "by-lastname"
+              ],
+              "query": [
+                {
+                  "key": "lastName",
+                  "value": "zzz"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"0 items\", () => pm.expect(pm.response.json().length).to.eql(0));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "B2",
+      "item": [
+        {
+          "name": "B2 REQUESTED",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/by-status?status=REQUESTED",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "by-status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "REQUESTED"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "B2 DELIVERED",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/by-status?status=DELIVERED",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "by-status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "DELIVERED"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"2 items\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "B2 FAIL invalid status (400)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/by-status?status=ABC",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "by-status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "ABC"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "B3",
+      "item": [
+        {
+          "name": "B3 October",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/between?start=2026-10-01&end=2026-10-31",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "between"
+              ],
+              "query": [
+                {
+                  "key": "start",
+                  "value": "2026-10-01"
+                },
+                {
+                  "key": "end",
+                  "value": "2026-10-31"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"6 items\", () => pm.expect(pm.response.json().length).to.eql(6));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "B3 same day inclusive",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/between?start=2026-10-20&end=2026-10-20",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "between"
+              ],
+              "query": [
+                {
+                  "key": "start",
+                  "value": "2026-10-20"
+                },
+                {
+                  "key": "end",
+                  "value": "2026-10-20"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"2 items\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "B3 empty range",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/between?start=2027-01-01&end=2027-01-31",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "between"
+              ],
+              "query": [
+                {
+                  "key": "start",
+                  "value": "2027-01-01"
+                },
+                {
+                  "key": "end",
+                  "value": "2027-01-31"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"0 items\", () => pm.expect(pm.response.json().length).to.eql(0));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "C1",
+      "item": [
+        {
+          "name": "C1 print",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/by-service-type?name=print",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "by-service-type"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "print"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"1 items\", () => pm.expect(pm.response.json().length).to.eql(1));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "C1 PRINT uppercase",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/by-service-type?name=PRINT",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "by-service-type"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "PRINT"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"1 items\", () => pm.expect(pm.response.json().length).to.eql(1));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "C1 laundry",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/by-service-type?name=laundry",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "by-service-type"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "laundry"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "C1 bike (empty)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/by-service-type?name=bike",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "by-service-type"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "bike"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"0 items\", () => pm.expect(pm.response.json().length).to.eql(0));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "C2",
+      "item": [
+        {
+          "name": "C2 free kiosks (Kiosk D)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/kiosks/free",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "kiosks",
+                "free"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"1 items\", () => pm.expect(pm.response.json().length).to.eql(1));",
+                  "pm.test(\"is kiosk 4\", () => pm.expect(pm.response.json()[0].kioskNumber).to.eql(4));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "C3",
+      "item": [
+        {
+          "name": "C3 unused service types (Bike Repair)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-types/unused",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-types",
+                "unused"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"1 items\", () => pm.expect(pm.response.json().length).to.eql(1));",
+                  "pm.test(\"Bike Repair\", () => pm.expect(pm.response.json()[0].name).to.eql(\"Bike Repair\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "C4",
+      "item": [
+        {
+          "name": "C4 Quick Print students",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/students/of-vendor/{{vendorQuickPrint}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "of-vendor",
+                "{{vendorQuickPrint}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"3 items\", () => pm.expect(pm.response.json().length).to.eql(3));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "C4 Clean and Fold students (distinct)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/students/of-vendor/{{vendorCleanFold}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "of-vendor",
+                "{{vendorCleanFold}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"2 items\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "C4 FAIL unknown vendor (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/students/of-vendor/11111111-1111-1111-1111-111111111111",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "of-vendor",
+                "11111111-1111-1111-1111-111111111111"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"The vendor with that id does not exist\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "D1",
+      "item": [
+        {
+          "name": "D1 FAIL past date (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/service-orders/save",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "save"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderDate\": \"2026-10-20\",\n  \"status\": \"REQUESTED\",\n  \"description\": \"Past\",\n  \"price\": 1000,\n  \"student\": {\n    \"id\": \"{{studentAline}}\"\n  },\n  \"vendor\": {\n    \"id\": \"{{vendorCampusBites}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Service order date cannot be in the past\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D1 FAIL vendor busy (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/service-orders/save",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "save"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderDate\": \"2026-11-05\",\n  \"status\": \"REQUESTED\",\n  \"description\": \"Clash\",\n  \"price\": 1000,\n  \"student\": {\n    \"id\": \"{{studentAline}}\"\n  },\n  \"vendor\": {\n    \"id\": \"{{vendorCampusBites}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Vendor already has an order on that date\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D1 success, status forced to REQUESTED (201) - run once",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/service-orders/save",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "save"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderDate\": \"2026-11-10\",\n  \"status\": \"DELIVERED\",\n  \"description\": \"D1 demo order\",\n  \"price\": 1000,\n  \"student\": {\n    \"id\": \"{{studentAline}}\"\n  },\n  \"vendor\": {\n    \"id\": \"{{vendorQuickPrint}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Service order saved successfully\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "D2",
+      "item": [
+        {
+          "name": "D2 FAIL REQUESTED to DELIVERED (400)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/{{orderPoster}}/status?status=DELIVERED",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "{{orderPoster}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "DELIVERED"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Cannot change status from REQUESTED to DELIVERED\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D2 REQUESTED to ACCEPTED (200) - run once",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/{{orderPoster}}/status?status=ACCEPTED",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "{{orderPoster}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "ACCEPTED"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Service order status updated successfully\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D2 FAIL ACCEPTED to REQUESTED (400)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/{{orderPoster}}/status?status=REQUESTED",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "{{orderPoster}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "REQUESTED"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Cannot change status from ACCEPTED to REQUESTED\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D2 FAIL DELIVERED order is final (400)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/{{orderLunch}}/status?status=DECLINED",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "{{orderLunch}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "DECLINED"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Cannot change status from DELIVERED to DECLINED\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D2 FAIL unknown id (404)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/11111111-1111-1111-1111-111111111111/status?status=ACCEPTED",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "11111111-1111-1111-1111-111111111111",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "ACCEPTED"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"The service order with that id does not exist\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "D3",
+      "item": [
+        {
+          "name": "D3 add Food Delivery to Clean and Fold (200) - run once",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/{{vendorCleanFold}}/service-types/{{typeFood}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "{{vendorCleanFold}}",
+                "service-types",
+                "{{typeFood}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Service type added to the vendor\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D3 FAIL already has it (409)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/{{vendorCleanFold}}/service-types/{{typeFood}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "{{vendorCleanFold}}",
+                "service-types",
+                "{{typeFood}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"The vendor already has that service type\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D3 FAIL unknown vendor (404)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/11111111-1111-1111-1111-111111111111/service-types/{{typeFood}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "11111111-1111-1111-1111-111111111111",
+                "service-types",
+                "{{typeFood}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"The vendor with that id does not exist\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D3 FAIL unknown service type (404)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/{{vendorCleanFold}}/service-types/11111111-1111-1111-1111-111111111111",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "{{vendorCleanFold}}",
+                "service-types",
+                "11111111-1111-1111-1111-111111111111"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"That service type does not exist\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "D4",
+      "item": [
+        {
+          "name": "D4 move Clean and Fold to kiosk 4 (200)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/{{vendorCleanFold}}/kiosk?kioskNumber=4",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "{{vendorCleanFold}}",
+                "kiosk"
+              ],
+              "query": [
+                {
+                  "key": "kioskNumber",
+                  "value": "4"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Kiosk changed successfully\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D4 check free kiosks now Kiosk C",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/kiosks/free",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "kiosks",
+                "free"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"1 items\", () => pm.expect(pm.response.json().length).to.eql(1));",
+                  "pm.test(\"is kiosk 3\", () => pm.expect(pm.response.json()[0].kioskNumber).to.eql(3));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D4 FAIL kiosk taken (409)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/{{vendorCleanFold}}/kiosk?kioskNumber=1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "{{vendorCleanFold}}",
+                "kiosk"
+              ],
+              "query": [
+                {
+                  "key": "kioskNumber",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"That kiosk is taken by another vendor\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D4 FAIL unknown kiosk number (404)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/{{vendorCleanFold}}/kiosk?kioskNumber=99",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "{{vendorCleanFold}}",
+                "kiosk"
+              ],
+              "query": [
+                {
+                  "key": "kioskNumber",
+                  "value": "99"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"The kiosk with that kioskNumber does not exist\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D4 FAIL unknown vendor (404)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/11111111-1111-1111-1111-111111111111/kiosk?kioskNumber=4",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "11111111-1111-1111-1111-111111111111",
+                "kiosk"
+              ],
+              "query": [
+                {
+                  "key": "kioskNumber",
+                  "value": "4"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"The vendor with that id does not exist\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D4 RESTORE Clean and Fold to kiosk 3 (200)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/vendors/{{vendorCleanFold}}/kiosk?kioskNumber=3",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "vendors",
+                "{{vendorCleanFold}}",
+                "kiosk"
+              ],
+              "query": [
+                {
+                  "key": "kioskNumber",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Kiosk changed successfully\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "E1",
+      "item": [
+        {
+          "name": "E1 write review (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/service-reviews/save?serviceOrderId={{orderSheets}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-reviews",
+                "save"
+              ],
+              "query": [
+                {
+                  "key": "serviceOrderId",
+                  "value": "{{orderSheets}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Fast delivery\",\n  \"comment\": \"Arrived on time\",\n  \"rating\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Service review saved successfully\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "E1 FAIL order not DELIVERED (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/service-reviews/save?serviceOrderId={{orderWeeklyLaundry}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-reviews",
+                "save"
+              ],
+              "query": [
+                {
+                  "key": "serviceOrderId",
+                  "value": "{{orderWeeklyLaundry}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Too early\",\n  \"comment\": \"Not delivered\",\n  \"rating\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Service reviews are only for DELIVERED service orders\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "E1 FAIL unknown order (404)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/service-reviews/save?serviceOrderId=11111111-1111-1111-1111-111111111111",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-reviews",
+                "save"
+              ],
+              "query": [
+                {
+                  "key": "serviceOrderId",
+                  "value": "11111111-1111-1111-1111-111111111111"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"x\",\n  \"comment\": \"x\",\n  \"rating\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"The service order with that id does not exist\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "E2",
+      "item": [
+        {
+          "name": "E2 Aline history, newest first",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-reviews/student/25-0417",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-reviews",
+                "student",
+                "25-0417"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "const r = pm.response.json();\npm.test(\"sorted newest first\", () => { for (let i = 1; i < r.length; i++) pm.expect(r[i-1].reviewDate >= r[i].reviewDate).to.be.true; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "E2 Grace (empty)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-reviews/student/25-0418",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-reviews",
+                "student",
+                "25-0418"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"0 items\", () => pm.expect(pm.response.json().length).to.eql(0));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "E3",
+      "item": [
+        {
+          "name": "E3 FAIL order with reviews (409)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/delete/{{orderLunch}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "delete",
+                "{{orderLunch}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"That service order has service reviews, delete them first\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "E3 FAIL unknown review (404)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-reviews/delete/11111111-1111-1111-1111-111111111111",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-reviews",
+                "delete",
+                "11111111-1111-1111-1111-111111111111"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"The service review with that id does not exist\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "E3 FAIL unknown order (404)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/delete/11111111-1111-1111-1111-111111111111",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "delete",
+                "11111111-1111-1111-1111-111111111111"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"The service order with that id does not exist\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "E3 delete review (200) - run once, re-add with E1",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-reviews/delete/{{reviewGoodPortion}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-reviews",
+                "delete",
+                "{{reviewGoodPortion}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"Service review deleted successfully\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "F1",
+      "item": [
+        {
+          "name": "F1 orders per status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/stats/by-status",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "stats",
+                "by-status"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"rows are [status, count]\", () => pm.response.json().forEach(r => pm.expect(r.length).to.eql(2)));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "F2",
+      "item": [
+        {
+          "name": "F2 cancel Quick Print 2026-10-20",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/cancel-day?vendorId={{vendorQuickPrint}}&date=2026-10-20",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "cancel-day"
+              ],
+              "query": [
+                {
+                  "key": "vendorId",
+                  "value": "{{vendorQuickPrint}}"
+                },
+                {
+                  "key": "date",
+                  "value": "2026-10-20"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"2 service orders cancelled\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "F2 DELIVERED protected (Campus Bites 2026-10-05)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/service-orders/cancel-day?vendorId={{vendorCampusBites}}&date=2026-10-05",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "service-orders",
+                "cancel-day"
+              ],
+              "query": [
+                {
+                  "key": "vendorId",
+                  "value": "{{vendorCampusBites}}"
+                },
+                {
+                  "key": "date",
+                  "value": "2026-10-05"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"message\", () => pm.expect(pm.response.text()).to.eql(\"0 service orders cancelled\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base",
+      "value": "http://127.0.0.1:8080"
+    },
+    {
+      "key": "vendorQuickPrint",
+      "value": "8e652c62-0a23-4786-bbbe-40f9e3f1515b"
+    },
+    {
+      "key": "vendorCampusBites",
+      "value": "c4d38646-1e30-41ee-8f87-56e9dc565296"
+    },
+    {
+      "key": "vendorCleanFold",
+      "value": "477a6c24-bbbb-48da-8d24-ee95940dfcf0"
+    },
+    {
+      "key": "studentAline",
+      "value": "5b54a431-8fea-4d85-8537-5e890d02e41e"
+    },
+    {
+      "key": "typeFood",
+      "value": "b27ed810-570e-4391-9b67-c0d4d54f17f1"
+    },
+    {
+      "key": "orderLunch",
+      "value": "802ab10d-ee56-4576-b579-91d563b0f1ef"
+    },
+    {
+      "key": "orderSheets",
+      "value": "8b67f07d-8719-49ce-af25-0fb2d6b9ce84"
+    },
+    {
+      "key": "orderPoster",
+      "value": "2ab2e0f4-ac2e-447d-9a72-620a83ddfe35"
+    },
+    {
+      "key": "orderWeeklyLaundry",
+      "value": "f8f8a325-a4a3-4712-a03a-53ea285f8c0d"
+    },
+    {
+      "key": "reviewGoodPortion",
+      "value": "1c086238-aba3-40a7-a002-73b82cb95dda"
+    },
+    {
+      "key": "demoStudentId",
+      "value": ""
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# Use this workspace to collaborate
+workspace:
+  id: d4536763-df66-48f5-88b5-5eb36b04e9de
+
+localResources:
+  collections:
+    - ../campus-connect-midterm.postman_collection.json
